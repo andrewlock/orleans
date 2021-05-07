@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Microsoft.Orleans.OrleansTelemetryConsumers.Datadog</PackageId>
+    <Title>Microsoft Orleans Telemetry Consumer - Datadog</Title>
+    <Description>Datadog/DogStatsD implementation of Orleans Telemetry API.</Description>
+    <PackageTags>$(PackageTags) Datadog DogStatsD StatsD</PackageTags>
+    <TargetFrameworks>$(StandardTargetFrameworks)</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyName>Orleans.TelemetryConsumers.Datadog</AssemblyName>
+    <RootNamespace>Orleans.TelemetryConsumers.Datadog</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DogStatsD-CSharp-Client" Version="$(DogStatsDVersion)" />
+  </ItemGroup>
+  
+</Project>

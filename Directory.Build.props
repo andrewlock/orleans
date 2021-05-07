@@ -95,6 +95,7 @@
     <ZooKeeperNetExVersion>3.4.12.4</ZooKeeperNetExVersion>
     <StackExchangeRedisVersion>2.0.601</StackExchangeRedisVersion>
     <KubernetesClientVersion>4.0.5</KubernetesClientVersion>
+    <DogStatsDVersion>6.0.0</DogStatsDVersion>
 
     <!-- Test related packages -->
     <FluentAssertionsVersion>4.19.4</FluentAssertionsVersion>

@@ -198,6 +198,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFSharpGrainInterfaces",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.CodeGenerator.MSBuild.Bootstrap", "src\BootstrapBuild\Orleans.CodeGenerator.MSBuild.Bootstrap\Orleans.CodeGenerator.MSBuild.Bootstrap.csproj", "{7735FCC6-4D1F-4FCA-8D8F-44515EF558C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.TelemetryConsumers.Datadog", "src\TelemetryConsumers\Orleans.TelemetryConsumers.Datadog\Orleans.TelemetryConsumers.Datadog.csproj", "{FE52BF45-D35D-46BA-A098-90194462E81C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -540,6 +542,10 @@ Global
 		{7735FCC6-4D1F-4FCA-8D8F-44515EF558C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7735FCC6-4D1F-4FCA-8D8F-44515EF558C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7735FCC6-4D1F-4FCA-8D8F-44515EF558C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE52BF45-D35D-46BA-A098-90194462E81C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE52BF45-D35D-46BA-A098-90194462E81C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE52BF45-D35D-46BA-A098-90194462E81C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE52BF45-D35D-46BA-A098-90194462E81C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -641,6 +647,7 @@ Global
 		{A145AFFC-E0CF-4861-AB0C-427C7670FF37} = {4CD3AA9E-D937-48CA-BB6C-158E12257D23}
 		{43BD15AA-E53D-4FB5-8E04-765EC86797F5} = {2A128E88-B281-4BFB-ADEB-E515437F2385}
 		{7735FCC6-4D1F-4FCA-8D8F-44515EF558C0} = {4CD3AA9E-D937-48CA-BB6C-158E12257D23}
+		{FE52BF45-D35D-46BA-A098-90194462E81C} = {FE2E08C6-9C3B-4AEE-AE07-CCA387580D7A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BFB3429-B5BB-4DB1-95B4-67D77A864952}
