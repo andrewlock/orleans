@@ -1,4 +1,4 @@
-﻿using Orleans.Runtime;
+using Orleans.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,33 +10,85 @@ namespace Orleans.TelemetryConsumers.Datadog
     public class DatadogTelemetryConsumer : IMetricTelemetryConsumer, IDisposable
     {
         private readonly DogStatsdService _service;
-        private readonly Func<string, string> _formatMetricName;
+        private readonly string[] _metricPrefixes;
+
         public DatadogTelemetryConsumer(IOptions<DatadogTelemetryConsumerOptions> options)
         {
             var config = options.Value.StatsDConfig ?? throw new ArgumentException();
-            _formatMetricName = options.Value.MetricFormatter ?? throw new ArgumentException();
+            _metricPrefixes = options.Value?.MetricPrefixes ?? throw new ArgumentException();
             _service = new DogStatsdService();
             _service.Configure(config);
         }
 
-        public void DecrementMetric(string name) =>
-            this._service.Decrement(_formatMetricName(name));
+        /// <inheritdoc />
+        public void DecrementMetric(string name)
+        {
+            if (ShouldRecord(name))
+            {
+                this._service.Decrement(FormatMetricName(name));
+            }
+        }
 
-        public void DecrementMetric(string name, double value) =>
-            this._service.Decrement(_formatMetricName(name), (int)Math.Clamp(value, int.MinValue, int.MaxValue));
+        /// <inheritdoc />
+        public void DecrementMetric(string name, double value)
+        {
+            if (ShouldRecord(name))
+            {
+                this._service.Decrement(FormatMetricName(name), (int)Math.Clamp(value, int.MinValue, int.MaxValue));
+            }
+        }
 
-        public void IncrementMetric(string name)=>
-            this._service.Increment(_formatMetricName(name));
+        /// <inheritdoc />
+        public void IncrementMetric(string name)
+        {
+            if (ShouldRecord(name))
+            {
+                this._service.Increment(FormatMetricName(name));
+            }
+        }
 
-        public void IncrementMetric(string name, double value) =>
-            this._service.Increment(_formatMetricName(name), (int)Math.Clamp(value, int.MinValue, int.MaxValue));
+        /// <inheritdoc />
+        public void IncrementMetric(string name, double value)
+        {
+            if (ShouldRecord(name))
+            {
+                this._service.Increment(FormatMetricName(name), (int)Math.Clamp(value, int.MinValue, int.MaxValue));
+            }
+        }
 
-        public void TrackMetric(string name, TimeSpan value, IDictionary<string, string> properties = null) =>
-            this._service.Timer(_formatMetricName(name), value.TotalMilliseconds, tags: GetTags(properties));
+        /// <inheritdoc />
+        public void TrackMetric(string name, TimeSpan value, IDictionary<string, string> properties = null)
+        {
+            if (ShouldRecord(name))
+            {
+                this._service.Distribution(FormatMetricName(name), value.TotalMilliseconds, tags: GetTags(properties));
+            }
+        }
 
-        public void TrackMetric(string name, double value, IDictionary<string, string> properties = null) =>
-            this._service.Timer(_formatMetricName(name), value, tags: GetTags(properties));
+        /// <inheritdoc />
+        public void TrackMetric(string name, double value, IDictionary<string, string> properties = null)
+        {
+            if (ShouldRecord(name))
+            {
+                this._service.Distribution(FormatMetricName(name), value, tags: GetTags(properties));
+            }
+        }
 
+        /// <inheritdoc />
+        public void Flush() => _service.Flush();
+
+        /// <inheritdoc />
+        public void Close() => _service.Flush();
+
+        /// <inheritdoc />
+        public void Dispose() => _service.Dispose();
+
+        private bool ShouldRecord(string name) =>
+            _metricPrefixes.Any(prefix => name.StartsWith(prefix));
+
+        private static string FormatMetricName(string name) =>
+            $"orleans.{name}";
+        
         private static string[] GetTags(IDictionary<string, string> properties)
         {
             if (properties is null)
@@ -48,11 +100,5 @@ namespace Orleans.TelemetryConsumers.Datadog
                 .Select(kvp => $"{kvp.Key.Replace(':', '_')}:{kvp.Value.Replace(':', '_')}")
                 .ToArray();
         }
-
-        public void Flush() => _service.Flush();
-
-        public void Close() => _service.Flush();
-
-        public void Dispose() => _service.Dispose();
     }
 }
